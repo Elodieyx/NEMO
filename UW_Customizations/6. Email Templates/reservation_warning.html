@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <h1> G2N Lab Reservation Warning </h1>
+    <p> Hi, <br> <br>
+
+        You have an upcoming reservation in 2 hours, reservation {{reservation}}. <br><br>
+
+        {% if {{fatal_error}} == true %}
+        Unfortunately, it is impossible for this tool to be used during the reservation (due to tool maintenance or a missing required dependency). <br> <br>
+        {% endif %}
+
+        You may log in to NEMO to <a href="https://g2nnemo.uwaterloo.ca/calendar/"> view your calendar</a>
+        or <a href="https://g2nnemo.uwaterloo.ca/tool_control/"> view the tool control page</a> for more information about the tool.<br>
+        Note that to access NEMO you must be on campus or connected to the UW VPN.<br><br>
+
+        - NEMO admin
+
+    </p>
+</body>
+</html>
