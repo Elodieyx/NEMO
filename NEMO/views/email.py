@@ -88,7 +88,8 @@ def email_broadcast(request, audience=''):
 	return render(request, 'email/email_broadcast.html', dictionary)
 
 
-@staff_member_required(login_url=None)
+# Commented out to allow regular users to access the page
+# @staff_member_required(login_url=None)
 @require_GET
 def compose_email(request):
 	audience = request.GET.get('audience')
@@ -130,7 +131,8 @@ def compose_email(request):
 	return render(request, 'email/compose_email.html', dictionary)
 
 
-@staff_member_required(login_url=None)
+# Commented out to allow regular users to access the page
+# @staff_member_required(login_url=None)
 @require_POST
 def send_broadcast_email(request):
 	content = get_media_file_contents('generic_email.html')
@@ -192,7 +194,8 @@ def send_broadcast_email(request):
 	return render(request, 'acknowledgement.html', dictionary)
 
 
-@staff_member_required(login_url=None)
+# Commented out to allow regular users to access the page
+# @staff_member_required(login_url=None)
 @require_POST
 def email_preview(request):
 	generic_email_template = get_media_file_contents('generic_email.html')

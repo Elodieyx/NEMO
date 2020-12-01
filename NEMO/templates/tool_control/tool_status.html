@@ -369,6 +369,13 @@
 				{% if tool.notification_email_address %}
 					<p>Problem reports for the {{ tool.name_or_child_in_use_name }} are automatically emailed to <a href="{% url 'get_email_form' %}?recipient={{ tool.notification_email_address }}" title="Email {{ tool.notification_email_address }}"><span class="glyphicon glyphicon-send small-icon"></span>{{ tool.notification_email_address }}</a>.</p>
 				{% endif %}
+				<!--Added to allow regular users to email all qualified users-->
+				{% with tool.user_set.all as qualified_users %}
+				   {% if not user.is_staff and qualified_users %}
+					  <p>You can email <a href="{% url 'compose_email' %}?audience=tool&selection={{ tool.id }}"><span class="glyphicon glyphicon-send"></span> all qualified users</a>.</p>
+				   {% endif %}
+				{% endwith %}
+				<!--End of addition-->
 				<p>The {{ tool.name_or_child_in_use_name }} is located in room <span class="glyphicon glyphicon-map-marker small-icon"></span>{{ tool.location }}.</p>
 				<p>You may dial the phone that is closest to the {{ tool.name_or_child_in_use_name }} at extension <span class="glyphicon glyphicon-phone small-icon"></span>{{ tool.phone_number }}.</p>
 			</div>
