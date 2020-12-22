@@ -107,8 +107,34 @@ function update_event_sources()
 			return;
 	}
 
-	$("#calendar").fullCalendar("addEventSource", item_event_source);
+	$("#calendar").fullCalendar("addSourceDavid", tool_event_source);
+	if(event_type === 'reservations' || event_type === 'usage')
+	{
+		if(item !== 'personal_schedule')
+		{
+			checkedTools=$('input:checked');
+			var len=Object.keys(checkedTools).length - 4;
+			for (var i = 0; i<len; i++)
+			{
+				if (checkedTools[i].id != item)
+				{
+					var tool_event_source_check =
+					{
+						url: "{% url 'event_feed' %}",
+						data:
+						{
+							event_type: event_type
+						}
+					};
 
+					tool_event_source_check.data.tool_id = checkedTools[i].id;
+					tool_event_source_check.color = color_array[checkedTools[i].id % 8];
+					$("#calendar").fullCalendar("addSourceDavid", tool_event_source_check);
+
+				}
+			}
+		}
+	}
 	refresh_sidebar_icons();
 }
 
@@ -515,8 +541,45 @@ function refresh_sidebar_area_icons()
 
 function refresh_calendar_and_sidebar()
 {
+	refresh_sidebar_icons();
+	var event_type = get_event_type();
+	if(event_type === 'reservations' || event_type === 'usage')
+	{
+		var item = get_selected_item();
+		if(item !== 'personal_schedule')
+		{
+			if(item)
+			{
+				var tool_id_sel = item;
+				{% for tool in tool_summary %}
+					var tid = {{ tool.id }}
+					if(tid === item)
+					{
+						{% if tool.operational == False %}
+							$(".fc-view").css("background-color","#ffa0a0");
+						{% elif tool.in_use %}
+							$(".fc-view").css("background-color","#d2e7ff");
+						{% else %}
+							$(".fc-view").css("background-color","#ffffff");
+						{% endif %}
+					}
+				{% endfor %}
+			}
+			else
+			{
+				$(".fc-view").css("background-color","#ffffff");
+			}
+		}
+		else
+		{
+			$(".fc-view").css("background-color","#ffffff");
+		}
+	}
+	else
+	{
+		$(".fc-view").css("background-color","#ffffff");
+	}
 	$("#calendar").fullCalendar('refetchEvents');
-	refresh_sidebar_icons()
 }
 
 function refresh_calendar_and_sidebar_area_icons()
